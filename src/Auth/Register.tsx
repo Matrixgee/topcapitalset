@@ -1,141 +1,137 @@
-import  { FormEvent, useState } from 'react';
-import Logo from '../assets/expressProfit.png'
-import { FaRegEye } from "react-icons/fa6";
-import { FaRegEyeSlash } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-import { Modal } from 'antd';
+import  { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png'
 
 
-
-
-const Register = () => {
-
-  const [fullName, setfullName] = useState<string> ('')
-  const [userName, setuserName] = useState <string> ('')
-  const [email, setemail] = useState <string> ('')
-  const [password, setpassword] = useState <string> ('')
-  const [confirmPassword, setconfirmPassword] = useState <string> ('')
-  const [ShowPassword, setShowPassword] = useState<boolean>(false)
-const [ShowConfirmpassword, setShowConfirmpassword] = useState<boolean>(false)
-const [loading, setloading] = useState<boolean>(false)
-const [ShowModal, setShowModal] = useState <boolean>(false)
-
-const data = {fullName,userName,password,email,confirmPassword}
-const url = 'https://express-profit.onrender.com/signup'
-
-// const Nav = useNavigate()
-  
-
-
-const HandleShowPassword = ()=>{
-setShowPassword(!ShowPassword)
-}
-const HandleConfirmPassword = ()=>{
-  setShowConfirmpassword(!ShowConfirmpassword)
-}
-
-
-const handleRegister = async (e: FormEvent) => {
-  e.preventDefault();
-
-  const passwordRegex = /^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/;
-  const isValidPassword = passwordRegex.test(password);
-
-  if (!fullName || !userName || !password || !email || !confirmPassword) {
-    toast.error('Please fill all the fields');
-  } else if (confirmPassword !== password) {
-    toast.error('Passwords do not match');
-  } else if (!isValidPassword) {
-    toast.error('Password must contain at least one special character');
-  } else {
-    const toastLoadingId = toast.loading("Please wait...");
-    try {
-      setloading(true);
-      const response = await axios.post(url, data);
-      toast.success(response.data.message);
-      setShowModal(true);
-      setfullName('');
-      setuserName('');
-      setemail('');
-      setpassword('');
-      setconfirmPassword('');
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const errorMsg = error.response?.data?.error || 'An unexpected error occurred';
-        toast.error(errorMsg, { duration: 3000 });
-      } else {
-        toast.error('Error occurred');
-      }
-    } finally {
-      setloading(false);
-      toast.dismiss(toastLoadingId);
-    }
-  }
+const Register=() => {
+  const colors = {
+  primaryBlue: '#304F9C',
+  lightBlue: '#E6EFFF',
+  coral: '#FF7F6B',
+  teal: '#20B2AA',
+  gold: '#FFD700',
+  darkText: '#212529',
+  grayText: '#6C757D'
 };
 
 
+ const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const handleSignup = (e:any) => {
+    e.preventDefault();
+    console.log('Signup submitted:', { name, email, password });
+  };
 
-
-
+  const navigate = useNavigate()
+  
   return (
-    <div className="w-[100%] h-[55rem] bg-[#023e8a] flex justify-center items-center phone:h-[60rem]">
-      <div className="w-[35%] h-[95%] bg-[#FDFDF7] rounded-lg flex justify-center items-center flex-col phone:w-[85%]">
-        <div className="w-[100%] h-[12%] flex justify-center items-center">
-          <img src={Logo} alt="" className='w-[70%] h-[70%] object-contain' />
-        </div>
-        <div className='w-[100%] h-[11%] flex justify-center items-start px-6 flex-col'>
-          <h2 className='font-semibold text-[1.7rem] text-[#031d44]'>Register</h2>
-          <p className=' text-sm font-medium text-[#979dac]'>Enter your details below and create an account to get started.</p>
-        </div>
-        <form action="" className='w-[90%] h-[70%]'>
-          <div className='w-[100%] h-[15.5%]  flex justify-center items-start flex-col'>
-            <label htmlFor="" className='font-semibold text-[#031d44]'>FullName</label>
-            <input type="text"  placeholder='John Doe' className='w-[100%] h-[50%] px-3 shadow-sm  rounded-lg outline-none ' onChange={(e)=>setfullName(e.target.value)} value={fullName}/>
-          </div>
-          <div className='w-[100%] h-[15.5%]  flex justify-center items-start flex-col'>
-            <label htmlFor="" className='font-semibold text-[#031d44]'>Username</label>
-            <input type="text"  placeholder='e.g Johndoe' className='w-[100%] h-[50%] px-3 shadow-sm  rounded-lg outline-none' onChange={(e)=>setuserName(e.target.value)} value={userName}/>
-          </div>
-          <div className='w-[100%] h-[15.5%]  flex justify-center items-start flex-col'>
-            <label htmlFor="" className='font-semibold text-[#031d44]'>Email</label>
-            <input type="email"  placeholder='e.g johndoe@mail.com' className='w-[100%] h-[50%] px-3 shadow-sm  rounded-lg outline-none' onChange={(e)=>setemail(e.target.value)} value={email}/>
-          </div>
-          <div className='w-[100%] h-[15.5%]  flex justify-center items-start flex-col'>
-            <label htmlFor="" className='font-semibold text-[#031d44]'>Password</label>
-            <div className='w-[100%] h-[50%] flex justify-center items-center bg-white rounded-lg shadow-sm'>
-              <input type={ShowPassword ? 'text' : 'password'}   placeholder='******' className='w-[100%] h-[100%] px-3 rounded-lg outline-none' onChange={(e)=>setpassword(e.target.value)} value={password}/>
-              {
-              ShowPassword ? <FaRegEye className='w-[30%] h-[30%] cursor-pointer' onClick={HandleShowPassword} /> : <FaRegEyeSlash className='w-[30%] h-[30%] cursor-pointer' onClick={HandleShowPassword}/>
-              }
-              
-            </div>
-          </div>
-          <div className='w-[100%] h-[15.5%]  flex justify-center items-start flex-col'>
-            <label htmlFor="" className='font-semibold text-[#031d44]'>Confirm Password</label>
-            <div className='w-[100%] h-[50%] flex justify-center items-center bg-white rounded-lg shadow-sm'>
-              <input type={ShowConfirmpassword ? "text" : "password"}  placeholder='******' className='w-[100%] h-[100%] px-3 rounded-lg outline-none' onChange={(e)=>setconfirmPassword(e.target.value)} value={confirmPassword}/>
-              {
-              ShowConfirmpassword ? <FaRegEye className='w-[30%] h-[30%] cursor-pointer' onClick={HandleConfirmPassword} /> : <FaRegEyeSlash className='w-[30%] h-[30%] cursor-pointer' onClick={HandleConfirmPassword}/>
-              }
-            </div>
-          </div>
-          <div className='w-[100%] h-[23%] flex justify-around items-center flex-col'>
-            <button className='w-[100%] h-[30%] bg-[#FDC500] rounded-md text-[#Fdfdf7]' onClick={handleRegister} disabled={loading}>
-              {
-                loading ? 'Loading' : 'Register'
-              }
-            </button>
-            <p>Already have an account? <Link to='/login' className='font-semibold text-[#FDC500]'>Login</Link> </p>
-          </div>
-        </form>
+    <div className="max-w-md w-full h-max space-y-8 bg-[#E6EFFF] p-[30px] rounded-[20px] " >
+      <div className="text-center">
+        <h2 className="text-3xl font-bold "  style={{ color: colors.primaryBlue }}>
+          Create an account
+        </h2>
+        <p className="mt-2" style={{ color: colors.grayText }}>
+          Start managing your investments in minutes
+        </p>
       </div>
-      <Modal title="Registration Successful" open={ShowModal} onOk={() => setShowModal(false)} onCancel={() => setShowModal(false)}>
-        <p>Your account has been registered successfully. Please check your email for verification.</p>
-      </Modal>
+      
+      <div className="mt-8 space-y-6">
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium" style={{ color: colors.darkText }}>
+              Full Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 p-3 w-full border rounded-lg"
+              style={{ borderColor: colors.grayText }}
+              placeholder="John Doe"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="signup-email" className="block text-sm font-medium" style={{ color: colors.darkText }}>
+              Email Address
+            </label>
+            <input
+              id="signup-email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 p-3 w-full border rounded-lg"
+              style={{ borderColor: colors.grayText }}
+              placeholder="name@example.com"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="signup-password" className="block text-sm font-medium" style={{ color: colors.darkText }}>
+              Password
+            </label>
+            <input
+              id="signup-password"
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 p-3 w-full border rounded-lg"
+              style={{ borderColor: colors.grayText }}
+              placeholder="Create a strong password"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium" style={{ color: colors.darkText }}>
+              Confirm Password
+            </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="mt-1 p-3 w-full border rounded-lg"
+              style={{ borderColor: colors.grayText }}
+              placeholder="Confirm your password"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <button
+            type="button"
+            onClick={handleSignup}
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white font-medium"
+            style={{ backgroundColor: colors.primaryBlue }}
+          >
+            Create Account
+          </button>
+        </div>
+      </div>
+      
+      <div className="mt-4 text-center">
+        <p style={{ color: colors.grayText }}>
+          Already have an account?{" "}
+          <button 
+            type="button"
+            onClick={()=>navigate("/auth/login")}
+            className="font-medium hover:underline"
+            style={{ color: colors.primaryBlue }}
+          >
+            Sign in
+          </button>
+        </p>
+      </div>
     </div>
-  )
+  );
 }
 
 export default Register;
