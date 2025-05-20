@@ -1,43 +1,50 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const colors = {
-  primaryBlue: '#304F9C',
-  lightBlue: '#E6EFFF',
-  coral: '#FF7F6B',
-  teal: '#20B2AA',
-  gold: '#FFD700',
-  darkText: '#212529',
-  grayText: '#6C757D'
-};
-  
-  const handleLogin = (e:any) => {
-    e.preventDefault();
-    console.log('Login submitted:', { email, password });
+    primaryBlue: "#304F9C",
+    lightBlue: "#E6EFFF",
+    coral: "#FF7F6B",
+    teal: "#20B2AA",
+    gold: "#FFD700",
+    darkText: "#212529",
+    grayText: "#6C757D",
   };
 
-  const navigate = useNavigate()
-  
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+    console.log("Login submitted:", { email, password });
+  };
+
+  const navigate = useNavigate();
+
   return (
-    <div className="max-w-md w-full space-y-8 bg-[white] p-[30px] rounded-[20px]">
+    <div className="max-w-md w-full h-screen space-y-8 bg-[#E6EFFF] p-[30px] rounded-[20px]">
       <div className="text-center">
-        <h2 className="text-3xl font-bold" style={{ color: colors.primaryBlue }}>
+        <h2
+          className="text-3xl font-bold"
+          style={{ color: colors.primaryBlue }}
+        >
           Welcome back
         </h2>
         <p className="mt-2" style={{ color: colors.grayText }}>
           Sign in to access your investment dashboard
         </p>
       </div>
-      
+
       <div className="mt-8 space-y-6">
         <div className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium" style={{ color: colors.darkText }}>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium"
+              style={{ color: colors.darkText }}
+            >
               Email Address
             </label>
             <input
@@ -51,9 +58,13 @@ const Login = () => {
               placeholder="name@example.com"
             />
           </div>
-          
+
           <div>
-            <label htmlFor="password" className="block text-sm font-medium" style={{ color: colors.darkText }}>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium"
+              style={{ color: colors.darkText }}
+            >
               Password
             </label>
             <input
@@ -68,7 +79,7 @@ const Login = () => {
             />
           </div>
         </div>
-        
+
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <input
@@ -77,13 +88,17 @@ const Login = () => {
               className="h-4 w-4"
               style={{ accentColor: colors.primaryBlue }}
             />
-            <label htmlFor="remember-me" className="ml-2 block text-sm" style={{ color: colors.grayText }}>
+            <label
+              htmlFor="remember-me"
+              className="ml-2 block text-sm"
+              style={{ color: colors.grayText }}
+            >
               Remember me
             </label>
           </div>
-          
+
           <div className="text-sm">
-            <button 
+            <button
               type="button"
               className="font-medium hover:underline"
               style={{ color: colors.primaryBlue }}
@@ -92,7 +107,7 @@ const Login = () => {
             </button>
           </div>
         </div>
-        
+
         <div>
           <button
             type="button"
@@ -104,13 +119,13 @@ const Login = () => {
           </button>
         </div>
       </div>
-      
+
       <div className="mt-4 text-center">
         <p style={{ color: colors.grayText }}>
           Don't have an account?{" "}
-          <button 
+          <button
             type="button"
-            onClick={()=>navigate("/auth/register")}
+            onClick={() => navigate("/auth/register")}
             className="font-medium hover:underline"
             style={{ color: colors.primaryBlue }}
           >
@@ -118,7 +133,7 @@ const Login = () => {
           </button>
         </p>
       </div>
-      
+
       <div className="">
         {/* <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -130,7 +145,7 @@ const Login = () => {
             </span>
           </div>
         </div> */}
-        
+
         {/* <div className="mt-6 grid grid-cols-2 gap-3">
           <button
             type="button"
@@ -159,6 +174,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;
