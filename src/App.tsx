@@ -1,16 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./Auth/Login";
+import Login from './Auth/Login'
 import Register from "./Auth/Register";
 import Layout from "./Components/Layout";
-import Home from "./Page/Home";
-import About from "./Page/About/About";
 import Insights from "./Page/Insight/Insights";
 import Planning from "./Page/Planning/Planning";
 import Investment from "./Page/Investment Products/Investment";
 import Dashboard from "./Components/Dashboard/DashBoard";
 import AdminPrivate from "./Routes/AdminPrivate";
 import Admin from "./Components/Admin/Admin";
-// import Users from "./Components/Admin/User"
 import Deposit from "./Components/Dashboard/Deposit";
 import Transactions from "./Components/Dashboard/Transactions";
 import TradingPlans from "./Components/Dashboard/TradingPlans";
@@ -24,17 +21,27 @@ import Security from "./Components/Dashboard/Security";
 import AdminTransactions from "./Components/Admin/AdminTransaction";
 import Testing from "./Components/Admin/Testing";
 import Settings from "./Components/Admin/settings";
+import Home from "./Components/TRY/Home";
+import AboutPage from "./Components/TRY/AboutPage";
+import ContactPage from "./Components/TRY/Contact";
+import AuthPage from "./Auth/AuthPage";
 
 const Router = createBrowserRouter([
-  {
-    path: "/login",
+{
+path:"auth",
+element: <AuthPage/>,
+children: [
+    {
+    path: "login",
     element: <Login />,
   },
   {
-    path: "/register",
+    path: "register",
     element: <Register />,
   },
 
+]
+},
   {
     path: "user",
     element: <Private element={<Dashboard />}></Private>,
@@ -87,11 +94,15 @@ const Router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home />,
+        element: <Home/>
       },
       {
         path: "/about",
-        element: <About />,
+        element: <AboutPage />,
+      },
+      {
+        path:"/contact",
+        element: <ContactPage/>
       },
       {
         path: "insights",
