@@ -1,8 +1,21 @@
+import { useEffect } from "react";
 import { BiTrendingUp } from "react-icons/bi";
 import { FaUserFriends } from "react-icons/fa";
 import { FiBarChart2, FiTarget } from "react-icons/fi";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const HowItWorks = () => {
+
+   useEffect(() => {
+        AOS.init({
+          duration: 800,
+          easing: "ease-in-out",
+          once: true,
+          mirror: false,
+        });
+      }, []);
+
   const steps = [
     {
       number: "01",
@@ -49,6 +62,8 @@ const HowItWorks = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, index) => (
             <div 
+              data-aos="fade-up"
+              data-aos-delay={index * 300}
               key={index} 
               className="bg-white p-6 rounded-lg relative hover:shadow-xl transition-all transform hover:-translate-y-2"
             >

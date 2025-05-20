@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import { FaUserFriends } from 'react-icons/fa';
-import { BiChevronDown, BiChevronUp, BiShield } from 'react-icons/bi';
+import { useEffect, useState } from 'react';
+import { FaChevronDown, FaQuestionCircle, FaUserFriends } from 'react-icons/fa';
+import { BiShield } from 'react-icons/bi';
 import { FiZap } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function AboutPage() {
   const [expandedFaq, setExpandedFaq] = useState(null);
@@ -14,8 +17,15 @@ export default function AboutPage() {
       setExpandedFaq(index);
     }
   };
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: "ease-in-out",
+      once: true,
+      mirror: false,
+    });
+  }, []);
 
-  // Custom styles based on provided color scheme
   const styles = {
     primaryBlue: '#304F9C',
     lightBlue: '#E6EFFF',
@@ -57,7 +67,7 @@ export default function AboutPage() {
           <p className="text-xl mb-8" style={{ color: styles.grayText }}>
             TopCapitalSet is on a mission to democratize investing by providing powerful tools and insights that were once available only to financial professionals.
           </p>
-          <button onClick={()=>navigate("/register")} className="px-8 py-3 rounded-lg text-white font-semibold" style={{ backgroundColor: styles.primaryBlue }}>
+          <button onClick={()=>navigate("/auth/register")} className="px-8 py-3 rounded-lg text-white font-semibold" style={{ backgroundColor: styles.primaryBlue }}>
             Start Investing Today
           </button>
         </div>
@@ -68,12 +78,12 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: styles.primaryBlue }}>Our Story</h2>
           <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="md:w-1/2">
+            <div className="md:w-full lg:w-1/2 w-[100%]" data-aos="fade-right" data-aos-delay="1000">
               <div className="bg-gray-200 h-64 w-full rounded-lg flex items-center justify-center">
                 <img src="/api/placeholder/400/320" alt="InvestWise founding team" className="rounded-lg" />
               </div>
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-1/2" data-aos="fade-left" data-aos-delay="1000">
               <p className="mb-4">
                 Founded in 2020, InvestWise emerged from a simple observation: investing shouldn't be complicated or exclusive. Our founders, frustrated with the unnecessary complexity of traditional investment platforms, set out to build something different.
               </p>
@@ -89,7 +99,10 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-12 text-center" style={{ color: styles.primaryBlue }}>Our Core Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+            <div
+             data-aos="fade-up"
+     data-aos-duration="2000"
+             className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
               <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: styles.accentCoral }}>
                 <BiShield color="white" size={32} />
               </div>
@@ -99,7 +112,10 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+            <div 
+            data-aos="fade-up"
+     data-aos-duration="2000"
+            className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
               <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: styles.accentTeal }}>
                 <FiZap color="white" size={32} />
               </div>
@@ -109,7 +125,10 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+            <div 
+            data-aos="fade-up"
+     data-aos-duration="2800"
+            className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
               <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: styles.accentGold }}>
                 <FaUserFriends color="white" size={32} />
               </div>
@@ -146,31 +165,50 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold mb-12 text-center" style={{ color: styles.primaryBlue }}>Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div 
-                key={index} 
-                className="border rounded-lg overflow-hidden"
-                style={{ borderColor: expandedFaq === index ? styles.primaryBlue : '#e5e7eb' }}
+              <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              className={`border border-gray-800 rounded-xl transition-all duration-300 ${
+                expandedFaq === index
+                  ? "bg-white hover:border-[#4f67ff]"
+                  : "bg-white hover:border-[#5a6ff1]"
+              }`}
+            >
+              <button
+                onClick={() => toggleFaq(index)}
+                className="w-full flex items-center justify-between p-5 text-left group"
               >
-                <button 
-                  className="w-full px-6 py-4 text-left flex justify-between items-center"
-                  onClick={() => toggleFaq(index)}
-                  style={{ 
-                    backgroundColor: expandedFaq === index ? styles.lightBlue : 'white',
-                    color: expandedFaq === index ? styles.primaryBlue : styles.darkText
-                  }}
+                <div className="flex items-center gap-3">
+                  <FaQuestionCircle className="text-[#818ee3]" />
+                  <h3 className="text-lg font-medium group-hover:text-[#6271d1]">
+                    {faq.question}
+                  </h3>
+                </div>
+                <motion.span
+                  animate={{ rotate: expandedFaq === index ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-[#586bff]"
                 >
-                  <span className="font-medium">{faq.question}</span>
-                  {expandedFaq === index ? 
-                    <BiChevronUp size={20} /> : 
-                    <BiChevronDown size={20} />
-                  }
-                </button>
+                  <FaChevronDown />
+                </motion.span>
+              </button>
+              <AnimatePresence>
                 {expandedFaq === index && (
-                  <div className="px-6 py-4" style={{ color: styles.grayText }}>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-5 pb-5 text-gray-300"
+                    style={{color: styles.primaryBlue}}
+                  >
                     <p>{faq.answer}</p>
-                  </div>
+                  </motion.div>
                 )}
-              </div>
+              </AnimatePresence>
+            </motion.div>
             ))}
           </div>
         </div>
@@ -181,11 +219,8 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold mb-6 text-white">Ready to Start Your Investment Journey?</h2>
           <p className="text-white mb-8 text-lg">Join thousands of investors who are growing their wealth with InvestWise</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-3 rounded-lg font-semibold bg-white" style={{ color: styles.primaryBlue }}>
-              Create Free Account
-            </button>
-            <button className="px-8 py-3 rounded-lg font-semibold border-2 border-white text-white">
-              Schedule a Demo
+            <button className="px-8 py-3 text-2xl rounded-lg font-semibold bg-white" style={{ color: styles.primaryBlue }}>
+              Create An Account
             </button>
           </div>
         </div>

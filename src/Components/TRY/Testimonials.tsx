@@ -1,4 +1,18 @@
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 const Testimonials = () => {
+
+      useEffect(() => {
+        AOS.init({
+          duration: 800,
+          easing: "ease-in-out",
+          once: true,
+          mirror: false,
+        });
+      }, []);
+
   const testimonials = [
     {
       name: "Sarah Johnson",
@@ -41,7 +55,9 @@ const Testimonials = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <div 
-              key={index} 
+              key={index}
+              data-aos="fade-up"
+              data-aos-delay={index * 300} 
               className="p-6 rounded-lg hover:shadow-lg transition-all transform hover:-translate-y-1"
               style={{ 
                 backgroundColor: testimonial.bgColor,

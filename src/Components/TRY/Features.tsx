@@ -1,8 +1,22 @@
 import { BiAward, BiPieChart, BiShield, BiTrendingUp } from "react-icons/bi";
 import { FaUserFriends } from "react-icons/fa";
 import { FiBarChart2 } from "react-icons/fi";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 
 const Features = () => {
+
+    useEffect(() => {
+      AOS.init({
+        duration: 800,
+        easing: "ease-in-out",
+        once: true,
+        mirror: false,
+      });
+    }, []);
+
   const featureItems = [
     {
       icon: <FiBarChart2 size={48} className="text-[#304F9C]" />,
@@ -64,6 +78,8 @@ const Features = () => {
           {featureItems.map((feature, index) => (
             <div 
               key={index} 
+              data-aos="fade-up"
+              data-aos-delay={index * 300}
               className={`bg-${feature.bgColor} p-6 rounded-lg hover:shadow-lg transition-all border-l-4`}
               style={{ backgroundColor: feature.bgColor, borderLeftColor: feature.color }}
             >

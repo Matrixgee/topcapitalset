@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { BiCheck, BiGlobe, BiMapPin, BiMessageSquare, BiPhone } from 'react-icons/bi';
+import { useEffect, useState } from 'react';
+import { BiCheck, BiMapPin, BiMessageSquare, BiPhone } from 'react-icons/bi';
 import { CgMail } from 'react-icons/cg';
 import { CiClock1} from 'react-icons/ci';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function ContactPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,14 @@ function ContactPage() {
     topic: '',
     message: ''
   });
+    useEffect(() => {
+      AOS.init({
+        duration: 800,
+        easing: "ease-in-out",
+        once: true,
+        mirror: false,
+      });
+    }, []);
   
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -112,7 +122,7 @@ function ContactPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {contactMethods.map((method, index) => (
-              <div key={index} className="flex flex-col items-center text-center p-6 rounded-lg shadow-md">
+              <div data-aos="fade-up" data-aos-duration="2000" key={index} className="flex flex-col items-center text-center p-6 rounded-lg shadow-md">
                 <div 
                   className="w-14 h-14 rounded-full flex items-center justify-center mb-4" 
                   style={{ backgroundColor: method.color }}
@@ -159,7 +169,7 @@ function ContactPage() {
                 For urgent matters outside these hours, please use our 24/7 emergency support line.
               </p>
             </div>
-            <div className="md:w-1/2 flex justify-center">
+            <div className="md:w-full lg:w-1/2 w-[100%] flex justify-center">
               <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
                 <img src="/api/placeholder/400/320" alt="Office location map" className="rounded-lg" />
               </div>
