@@ -2,57 +2,129 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body{
-    font-family: "Lora", serif;
+body {
+  font-family: "Lora", serif;
 }
 /* *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 } */
 
-.ant-drawer-body{
-    padding: 0 !important;
+/* 
+  Place this in your index.css or a separate utilities.css file 
+  These are some additional utility classes for the dashboard
+*/
+
+/* Custom scrollbar for webkit browsers */
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 6px;
 }
-.ant-drawer-header{
-    background: #122044;
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: #1f2937;
 }
-.ant-drawer  .ant-drawer-close{
-    color: #ffd500;
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+  border-radius: 20px;
 }
-.ant-select{
-    height: 50%;
-    width: 100%;
-    background: transparent;
+
+/* Fade in animation for components */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Slide in animation for mobile sidebar */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+/* Hover effects for interactive elements */
+.hover-scale {
+  transition: transform 0.2s;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Glass effect for premium components */
+.glass-effect {
+  background: rgba(31, 41, 55, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive fixes */
+@media (max-width: 640px) {
+  .mobile-padding {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .mobile-text-center {
+    text-align: center;
+  }
+}
+
+.ant-drawer-body {
+  padding: 0 !important;
+}
+.ant-drawer-header {
+  background: #122044;
+}
+.ant-drawer .ant-drawer-close {
+  color: #ffd500;
+}
+.ant-select {
+  height: 50%;
+  width: 100%;
+  background: transparent;
 }
 
 .MobileView {
-    width: 30%;
-    height: 100%;
-    display: none;
-    
+  width: 30%;
+  height: 100%;
+  display: none;
 }
 
-@media screen and (max-width: 900px){
-    .MobileView{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+@media screen and (max-width: 900px) {
+  .MobileView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
-
 
 @media screen and (max-width: 500px) {
-    .MobileView{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+  .MobileView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 @media screen and (max-width: 360px) {
-    .MobileView{
-       display: flex;
-       justify-content: center;
-       align-items: center;
-    }
+  .MobileView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

@@ -1,110 +1,158 @@
-import { Link, NavLink } from "react-router-dom";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { LuWallet } from "react-icons/lu";
-import { PiWarningCircleLight } from "react-icons/pi";
-import { BsCurrencyDollar } from "react-icons/bs";
-import TradingWidgetThree from "../TradingWidgetThree";
-// import TradingViewWidgetOne from "../TradeOne";
-import { useSelector } from "react-redux";
-import RootState from "../../Function/RootState";
-import { useEffect, useState } from "react";
-// import TradingViewWidgettwo from "../TradinViewTwo";
-import { MdOutlineAccountBalance } from "react-icons/md";
-import Transactions from "./Transactions";
+// ExampleDashboardPage.jsx - A sample page to show content layout
 
-import axios from "axios";
+import {
+  FiActivity,
+  FiUsers,
+  FiDollarSign,
+  FiShoppingBag,
+} from "react-icons/fi";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const Overview = () => {
-  const user = useSelector((state: RootState) => state.mySlice.tradeUser);
-  const [ExchangeRate, setExchangeRate] = useState(0);
+  // Sample data for the chart
+  const data = [
+    { name: "Jan", value: 400 },
+    { name: "Feb", value: 300 },
+    { name: "Mar", value: 600 },
+    { name: "Apr", value: 800 },
+    { name: "May", value: 500 },
+    { name: "Jun", value: 900 },
+    { name: "Jul", value: 700 },
+  ];
 
-  useEffect(() => {
-    const Fetchdata = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.coindesk.com/v1/bpi/currentprice.json"
-        );
-        const rate = response.data.bpi.USD.rate.replace(",", "");
-        setExchangeRate(parseFloat(rate));
-      } catch (error) {
-        console.log("error getting data ");
-      }
-    };
-    Fetchdata();
-  }, []);
-
-  const totalRate = user.acctBalance / ExchangeRate;
+  // Stats cards data
+  const statsCards = [
+    {
+      title: "Total Revenue",
+      value: "$24,560",
+      change: "+8%",
+      icon: <FiDollarSign size={24} />,
+      color: "bg-blue-600",
+    },
+    {
+      title: "Active Users",
+      value: "1,259",
+      change: "+12%",
+      icon: <FiUsers size={24} />,
+      color: "bg-green-600",
+    },
+    {
+      title: "New Orders",
+      value: "684",
+      change: "+5%",
+      icon: <FiShoppingBag size={24} />,
+      color: "bg-purple-600",
+    },
+    {
+      title: "Growth Rate",
+      value: "24%",
+      change: "+2%",
+      icon: <FiActivity size={24} />,
+      color: "bg-yellow-600",
+    },
+  ];
 
   return (
-    <div className="w-[100%] h-[85vh] bg-[#14141b]  scroll scrollbar scrollbar-track-grey-500 overflow-y-scroll mt-3 ">
-      <div className="w-[100%] h-[20%] flex justify-around phone:pr-3">
-        <section className="w-[auto] h-[100%]  flex gap-[3px] justify-center items-start flex-col px-4 phone:w-[30%] phone:pl-5 smallPhone:hidden ">
-          <p className="text-[15px] text-[whitesmoke]">Welcome onboard,</p>
-          <h3 className="font-semibold text-2xl text-[#fff] phone:text-sm">
-            {user?.userName}
-          </h3>
-          <p className="font-medium text-[14px] text-[whitesmoke] phone:hidden">
-            At a glance, your account summary
-          </p>
-        </section>
-        <section className="w-[40%] h-[100%] flex justify-center gap-[15px] items-center phone:w-[60%] phone:gap-[0px] smallPhone:w-[90%] phone:justify-between ">
-          <button className="w-[30%] h-[40%] bg-[#FDC500] rounded-md phone:w-[45%] ">
-            <NavLink
-              to="/user/deposit"
-              className="flex justify-center items-center gap-[5px]"
-            >
-              <IoIosAddCircleOutline className="text-[#FDFDF7]" />{" "}
-              <p className="text-[#FDFDF7] font-semibold">Deposit</p>
-            </NavLink>
-          </button>
-          <button className="w-[30%] h-[40%] bg-[#023e8a] rounded-md phone:w-[45%] ">
-            <Link
-              to="/user/my-plans"
-              className="flex justify-center items-center gap-[5px]"
-            >
-              <LuWallet className="text-[#FDFDF7]" />{" "}
-              <p className="text-[#FDFDF7] font-semibold">My Plans</p>
-            </Link>
-          </button>
-        </section>
+    <div className="w-full h-full p-4">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white mb-2">
+          Dashboard Overview
+        </h1>
+        <p className="text-gray-400">
+          Welcome back, here's what's happening with your projects today.
+        </p>
       </div>
-      <section className="w-[100%] h-[40%] flex justify-around pl-4  items-center phone:flex-col mt-5 phone:pr-3 phone:h-[60%] phone:gap-[20px] ">
-        <div className="w-[40%] h-[70%] bg-[#023e8a] flex flex-row rounded-md shadow-lg phone:w-[95%] pl-4 gap-[5px] phone:justify-between phone:h-[75%] smallPhone:flex-col ">
-          <div className="w-[30%] h-[100%] flex justify-center flex-col phone:w-[40%] smallPhone:w-[100%] smallPhone:gap-[5px] smallPhone:pt-2 ">
-            <div className="w-[60%] h-[50%] bg-[#fff] rounded-full flex justify-center items-center phone:w-[45%] phone:h-[40%] smallPhone:h-[53%] smallPhone:w-[15%]  ">
-              <MdOutlineAccountBalance className="w-10 h-10 phone:w-8 smallPhone:w-6" />
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        {statsCards.map((stat, index) => (
+          <div key={index} className="bg-gray-800 rounded-lg p-4 shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-gray-400 font-medium">{stat.title}</div>
+              <div className={`${stat.color} rounded-lg p-2 text-white`}>
+                {stat.icon}
+              </div>
             </div>
-            <div className="w-[100%] h-[20%] flex gap-[5px] items-center">
-              <p className=" font-medium text-xs text-[#fff]">
-                Available Balance
-              </p>
-              <PiWarningCircleLight className="text-[white] " />
+            <div className="text-white text-2xl font-bold mb-1">
+              {stat.value}
             </div>
-          </div>
-          <div className="w-[70%] h-[100%] flex flex-col justify-center gap-[10px] phone:w-[60%] smallPhone:w-[100%] ">
-            <div className="w-[auto] h-[auto]  flex justify-start  items-center">
-              <BsCurrencyDollar className=" font-semibold text-3xl text-[white] phone:text-2xl " />{" "}
-              <p className="font-semibold text-2xl text-[white]">
-                {user.acctBalance}.00
-              </p>
-            </div>
-            <div className=" w-auto h-[auto] flex justify-center items-center">
-              <p className="text-green-500  text-xl phone:text-lg">
-                {" "}
-                {totalRate} BTC
-              </p>
+            <div className="text-green-500 text-sm">
+              {stat.change}{" "}
+              <span className="text-gray-400">from last month</span>
             </div>
           </div>
+        ))}
+      </div>
+
+      {/* Chart Section */}
+      <div className="bg-gray-800 rounded-lg p-4 shadow-lg mb-6">
+        <h2 className="text-lg font-semibold text-white mb-4">
+          Revenue Overview
+        </h2>
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={data}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="name" stroke="#9CA3AF" />
+              <YAxis stroke="#9CA3AF" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#1F2937",
+                  borderColor: "#374151",
+                  color: "#F9FAFB",
+                }}
+              />
+              <Bar dataKey="value" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
-        <div className="w-[40%] h-[80%]  phone:w-[90%] flex items-center">
-          <TradingWidgetThree />
+      </div>
+
+      {/* Recent Activity */}
+      <div className="bg-gray-800 rounded-lg p-4 shadow-lg">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold text-white">Recent Activity</h2>
+          <button className="text-sm text-blue-400 hover:text-blue-300">
+            View all
+          </button>
         </div>
-      </section>
-      <section className=" w-[100%] h-[500px] flex justify-center items-center">
-        <div className="w-[95%] h-[100%] ">
-          <Transactions />
+        <div className="space-y-4">
+          {[1, 2, 3, 4].map((item) => (
+            <div
+              key={item}
+              className="flex items-start p-3 hover:bg-gray-700 rounded-lg transition-colors duration-200"
+            >
+              <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white flex-shrink-0">
+                {item % 2 === 0 ? "JP" : "AS"}
+              </div>
+              <div className="ml-3">
+                <div className="text-white text-sm font-medium">
+                  {item % 2 === 0 ? "John Peterson" : "Anna Smith"}
+                </div>
+                <div className="text-gray-400 text-sm">
+                  {item % 2 === 0
+                    ? "Created a new project"
+                    : "Updated their profile"}
+                </div>
+                <div className="text-gray-500 text-xs mt-1">
+                  {item} hour{item !== 1 ? "s" : ""} ago
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 };
