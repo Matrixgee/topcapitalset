@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(" ");
 
   const colors = {
     primaryBlue: "#304F9C",
