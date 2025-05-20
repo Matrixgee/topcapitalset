@@ -1,10 +1,67 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { userdata, userToken } from "../Function/Slice";
+import { useDispatch } from "react-redux";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { ImSpinner9 } from "react-icons/im";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(" ");
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setshowPassword] = useState(false);
+  const data = { userName, password };
+  const url = "https://express-profit.vercel.app/login";
+  const Nav = useNavigate();
+  const dispatch = useDispatch();
+
+  const HandleShowPassword = () => {
+    setshowPassword(!showPassword);
+  };
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!userName || !password) {
+      toast.error("Please input all fields");
+      return;
+    }
+    const toastLoadingId = toast.loading("Please wait...");
+    setLoading(true);
+    try {
+      const response = await axios.post(url, data);
+      toast.success(response.data.message, { duration: 2000 });
+      localStorage.setItem("token", response.data.token);
+
+      if (response.data.userType === "admin") {
+        toast.success("Welcome Admin", { duration: 2000 });
+        setTimeout(() => {
+          Nav("/admin/testing");
+        }, 1000);
+      } else {
+        toast.success(response.data.message, { duration: 2000 });
+        setTimeout(() => {
+          Nav("/user/overview");
+        }, 2000);
+      }
+      dispatch(userdata(response.data.data));
+      dispatch(userToken(response.data.token));
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMsg =
+          error.response?.data?.message || "An unexpected error occurred";
+        toast.error(errorMsg, { duration: 3000 });
+      } else {
+        toast.error("Error occurred");
+      }
+    } finally {
+      setLoading(false);
+      toast.dismiss(toastLoadingId);
+    }
+  };
 
   const colors = {
     primaryBlue: "#304F9C",
@@ -14,11 +71,6 @@ const Login = () => {
     gold: "#FFD700",
     darkText: "#212529",
     grayText: "#6C757D",
-  };
-
-  const handleLogin = (e: any) => {
-    e.preventDefault();
-    console.log("Login submitted:", { email, password });
   };
 
   const navigate = useNavigate();
@@ -45,38 +97,46 @@ const Login = () => {
               className="block text-sm font-medium"
               style={{ color: colors.darkText }}
             >
-              Email Address
+              UserName
             </label>
             <input
-              id="email"
-              type="email"
+              id="text"
+              type="text"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               className="mt-1 p-3 w-full border rounded-lg"
               style={{ borderColor: colors.grayText }}
-              placeholder="name@example.com"
+              placeholder="username"
             />
           </div>
 
-          <div>
+          <div className="mt-4">
             <label
-              htmlFor="password"
+              htmlFor="signup-password"
               className="block text-sm font-medium"
               style={{ color: colors.darkText }}
             >
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 p-3 w-full border rounded-lg"
-              style={{ borderColor: colors.grayText }}
-              placeholder="Your password"
-            />
+            <div className="relative mt-1">
+              <input
+                id="signup-password"
+                type={showPassword ? "text" : "password"}
+                className="p-3 w-full border rounded-lg pr-10"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+                style={{ borderColor: colors.grayText }}
+                placeholder="Create a strong password"
+              />
+              <div
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                onClick={HandleShowPassword}
+              >
+                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -111,11 +171,12 @@ const Login = () => {
         <div>
           <button
             type="button"
+            disabled={loading}
             onClick={handleLogin}
             className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white font-medium"
             style={{ backgroundColor: colors.primaryBlue }}
           >
-            Sign In
+            {loading ? <ImSpinner9 className="animate-spin" /> : "Login"}
           </button>
         </div>
       </div>

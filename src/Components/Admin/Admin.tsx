@@ -18,7 +18,7 @@ const Admin = () => {
 
   const handleLogout = () => {
     dispatch(userLogout());
-    nav("/login");
+    nav("/auth/login");
   };
 
   return (
