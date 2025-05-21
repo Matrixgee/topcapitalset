@@ -14,7 +14,7 @@ import { Outlet } from "react-router-dom";
 
   
   return (
-    <div className="flex h-max py-[20px] lg:p-0 lg:h-screen md:h-max md:py-[20px] w-full justify-center flex-col items-center" style={{ backgroundColor: colors.primaryBlue }}>
+    <div className="flex h-max py-[80px] lg:h-max md:h-max md:py-[20px] min-h-screen w-full justify-center flex-col items-center" style={{ backgroundColor: colors.primaryBlue }}>
       <Outlet/>
     </div>
   );
