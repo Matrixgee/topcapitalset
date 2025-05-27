@@ -1,12 +1,15 @@
 // Menu.jsx
 import { NavLink } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
-import { MdAccountBox } from "react-icons/md";
+
 import { LuWallet } from "react-icons/lu";
 import { GiTrade } from "react-icons/gi";
 import { PiSwap } from "react-icons/pi";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
+import { useSelector } from "react-redux";
+
+import { TbPackages } from "react-icons/tb";
 
 type MenuProps = {
   isMobile?: boolean;
@@ -14,6 +17,8 @@ type MenuProps = {
 };
 
 const Menu = ({ isMobile = false, closeSidebar }: MenuProps) => {
+  const user = useSelector((state: any) => state.mySlice.tradeUser);
+
   // Navigation items array for easier management
   const navItems = [
     {
@@ -27,14 +32,9 @@ const Menu = ({ isMobile = false, closeSidebar }: MenuProps) => {
       icon: <LuWallet className="w-5 h-5" />,
     },
     {
-      path: "tradingplans",
-      name: "Trade Plans",
+      path: "deposit",
+      name: "Deposit",
       icon: <GiTrade className="w-5 h-5" />,
-    },
-    {
-      path: "transaction",
-      name: "Transactions",
-      icon: <PiSwap className="w-5 h-5" />,
     },
     {
       path: "withdraw",
@@ -42,9 +42,14 @@ const Menu = ({ isMobile = false, closeSidebar }: MenuProps) => {
       icon: <BiMoneyWithdraw className="w-5 h-5" />,
     },
     {
-      path: "account",
-      name: "Account",
-      icon: <MdAccountBox className="w-5 h-5" />,
+      path: "transaction",
+      name: "Transactions",
+      icon: <PiSwap className="w-5 h-5" />,
+    },
+    {
+      path: "tradingplans",
+      name: "Trading Plans",
+      icon: <TbPackages className="w-5 h-5" />,
     },
   ];
 
@@ -53,7 +58,7 @@ const Menu = ({ isMobile = false, closeSidebar }: MenuProps) => {
       {/* Logo and close button (for mobile) */}
       <div className="w-full h-16 flex justify-between items-center px-4 border-b border-gray-800">
         <div className="text-xl font-bold text-white">
-          Dashboard<span className="text-blue-500">Pro</span>
+          Top Capital<span className="text-blue-500">Set</span>
         </div>
 
         {isMobile && (
@@ -72,21 +77,14 @@ const Menu = ({ isMobile = false, closeSidebar }: MenuProps) => {
         <div className="mb-6 p-3 bg-gray-800 rounded-lg">
           <div className="flex items-center mb-3">
             <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
-              JD
+              {user.fullName ? user.fullName.charAt(0).toUpperCase() : "U"}
             </div>
             <div className="ml-3">
-              <div className="text-sm font-medium text-white">John Doe</div>
-              <div className="text-xs text-gray-400">Administrator</div>
+              <div className="text-sm font-medium text-white">
+                {user.fullName}
+              </div>
+              <div className="text-xs text-gray-400">User</div>
             </div>
-          </div>
-          <div className="w-full h-1 bg-gray-700 rounded-full overflow-hidden">
-            <div className="bg-blue-500 h-full w-4/5"></div>
-          </div>
-          <div className="flex justify-between items-center mt-2">
-            <span className="text-xs text-gray-400">Profile: 80% complete</span>
-            <button className="text-xs text-blue-400 hover:text-blue-300">
-              Edit
-            </button>
           </div>
         </div>
 
@@ -119,13 +117,6 @@ const Menu = ({ isMobile = false, closeSidebar }: MenuProps) => {
             </NavLink>
           ))}
         </div>
-      </div>
-
-      {/* Bottom section */}
-      <div className="p-4 border-t border-gray-800">
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors duration-200">
-          + New Project
-        </button>
       </div>
     </div>
   );

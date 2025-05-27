@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // DashHeader.jsx
 import { useState, useRef, useEffect } from "react";
-import { IoMdMenu, IoMdNotificationsOutline, IoMdSearch } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
-import { FiMail } from "react-icons/fi";
+import { IoMdMenu, IoMdSearch } from "react-icons/io";
+
 import { FaCaretDown } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { userLogout } from "../../Function/Slice";
 
 interface DashHeaderProps {
   toggleSidebar: () => void;
@@ -12,9 +14,10 @@ interface DashHeaderProps {
 
 const DashHeader = ({ toggleSidebar }: DashHeaderProps) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
+
   const userMenuRef = useRef(null);
-  const notificationRef = useRef(null);
+
+  const user = useSelector((state: any) => state.mySlice.tradeUser);
 
   // Handle clicks outside the dropdowns to close them
   useEffect(() => {
@@ -25,12 +28,6 @@ const DashHeader = ({ toggleSidebar }: DashHeaderProps) => {
       ) {
         setShowUserMenu(false);
       }
-      if (
-        notificationRef.current &&
-        !(notificationRef.current as any).contains(event.target)
-      ) {
-        setShowNotifications(false);
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -38,6 +35,15 @@ const DashHeader = ({ toggleSidebar }: DashHeaderProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const handlelogout = () => {
+    dispatch(userLogout());
+    navigate("/auth/login");
+  };
 
   return (
     <div className="w-full h-16 bg-[#14141b] shadow-md border-b border-gray-800 flex items-center justify-between px-4">
@@ -68,73 +74,6 @@ const DashHeader = ({ toggleSidebar }: DashHeaderProps) => {
       {/* Right section: Notifications & User menu */}
       <div className="flex items-center space-x-4">
         {/* Icons */}
-        <div className="flex items-center space-x-2">
-          {/* Settings */}
-          <button className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800">
-            <IoSettingsOutline size={20} />
-          </button>
-
-          {/* Mail */}
-          <button className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800 relative">
-            <FiMail size={20} />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          {/* Notifications */}
-          <div className="relative" ref={notificationRef}>
-            <button
-              className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800 relative"
-              onClick={() => setShowNotifications(!showNotifications)}
-            >
-              <IoMdNotificationsOutline size={20} />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
-            </button>
-
-            {/* Notifications dropdown */}
-            {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-gray-900 border border-gray-800 rounded-lg shadow-lg z-50">
-                <div className="p-3 border-b border-gray-800 flex justify-between items-center">
-                  <h3 className="font-medium text-white">Notifications</h3>
-                  <span className="text-xs px-2 py-1 bg-blue-600 text-white rounded-full">
-                    3 New
-                  </span>
-                </div>
-
-                <div className="max-h-72 overflow-y-auto">
-                  {/* Sample notifications */}
-                  {[1, 2, 3].map((item) => (
-                    <div
-                      key={item}
-                      className="p-3 border-b border-gray-800 hover:bg-gray-800 transition-colors duration-200"
-                    >
-                      <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
-                          {item % 2 === 0 ? "U" : "S"}
-                        </div>
-                        <div className="ml-3">
-                          <p className="text-sm text-white">
-                            {item % 2 === 0
-                              ? "User update completed"
-                              : "System alert detected"}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-1">
-                            {item} hour{item !== 1 ? "s" : ""} ago
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="p-3 text-center">
-                  <button className="text-sm text-blue-400 hover:text-blue-300">
-                    View all notifications
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
 
         {/* User profile */}
         <div className="relative" ref={userMenuRef}>
@@ -143,10 +82,10 @@ const DashHeader = ({ toggleSidebar }: DashHeaderProps) => {
             className="flex items-center space-x-2 hover:bg-gray-800 rounded-lg p-1 pr-2 transition-colors duration-200"
           >
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
-              JD
+              {user.fullName ? user.fullName.charAt(0).toUpperCase() : "U"}
             </div>
             <span className="text-gray-200 hidden md:inline-block">
-              John Doe
+              {user.fullName}
             </span>
             <FaCaretDown className="text-gray-400" size={12} />
           </button>
@@ -155,8 +94,10 @@ const DashHeader = ({ toggleSidebar }: DashHeaderProps) => {
           {showUserMenu && (
             <div className="absolute right-0 mt-2 w-56 bg-gray-900 border border-gray-800 rounded-lg shadow-lg z-50">
               <div className="p-3 border-b border-gray-800">
-                <p className="text-sm font-medium text-white">John Doe</p>
-                <p className="text-xs text-gray-400">john.doe@example.com</p>
+                <p className="text-sm font-medium text-white">
+                  {user.fullName}
+                </p>
+                <p className="text-xs text-gray-400">{user.email}</p>
               </div>
 
               <div className="p-2">
@@ -171,7 +112,10 @@ const DashHeader = ({ toggleSidebar }: DashHeaderProps) => {
               </div>
 
               <div className="border-t border-gray-800 p-2">
-                <button className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-gray-800 hover:text-red-300 rounded-md transition-colors duration-200">
+                <button
+                  onClick={handlelogout}
+                  className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-gray-800 hover:text-red-300 rounded-md transition-colors duration-200"
+                >
                   Sign out
                 </button>
               </div>

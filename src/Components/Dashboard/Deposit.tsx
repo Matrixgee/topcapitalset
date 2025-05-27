@@ -263,8 +263,8 @@ const Deposit = () => {
 
   return (
     <>
-      <div className="w-full h-max phone:h-full phone:overflow-y-scroll">
-        <div className="w-full h-max flex flex-col items-center px-10 phone:px-4 py-8 gap-3">
+      <div className="w-full h-max max-md:h-full max-md:overflow-y-scroll">
+        <div className="w-full h-max flex flex-col items-center px-10 max-md:px-4 py-8 gap-3">
           {direct === true && isBtcPay === true ? (
             <>
               <div className="text-xl font-semibold text-[rgb(54,74,99)] w-full h-max flex items-center gap-1 ">
@@ -276,7 +276,7 @@ const Deposit = () => {
                   Back
                 </span>
               </div>
-              <div className="w-[50%] phone:w-full h-max flex flex-col items-center gap-8 bg-white py-6 px-8">
+              <div className="w-[50%] max-md:w-full h-max flex flex-col items-center gap-8 bg-white py-6 px-8">
                 <p className="text-[rgb(54,74,99)] font-semibold text-center text-lg">
                   Transaction details
                 </p>
@@ -364,7 +364,7 @@ const Deposit = () => {
                   Back
                 </span>
               </div>
-              <div className="w-[50%] phone:w-full h-max flex flex-col items-center gap-8 bg-white py-6 px-8">
+              <div className="w-[50%] max-md:w-full h-max flex flex-col items-center gap-8 bg-white py-6 px-8">
                 <p className="text-[rgb(54,74,99)] font-semibold text-center text-lg">
                   Transaction details
                 </p>
@@ -439,17 +439,17 @@ const Deposit = () => {
             </>
           ) : (
             <>
-              <div className="w-[50%] phone:w-full h-max flex flex-col gap-8">
-                <p className="text-[#FDFDF7] text-4xl text-center phone:text-lg ">
+              <div className="w-[50%] max-md:w-full h-max flex flex-col gap-8">
+                <p className="text-[#FDFDF7] text-4xl text-center max-md:text-lg ">
                   Add funds to your balance!
                 </p>
                 <div className="w-full h-max flex flex-col gap-2">
-                  <p className="text-[#FDFDF7] text-sm font-medium phone:text-xs">
+                  <p className="text-[#FDFDF7] text-sm font-medium max-md:text-xs">
                     Amount to Deposit <span>USD</span>
                   </p>
                   <input
                     type="text"
-                    className="w-full h-16 border border-gray-300 rounded pl-3 outline-1 outline-[#0238ea] phone:h-12"
+                    className="w-full h-16 border border-gray-300 rounded pl-3 outline-1 outline-[#0238ea] max-md:h-12"
                     placeholder="500"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
@@ -462,7 +462,7 @@ const Deposit = () => {
                   <p className="text-[#FDFDF7] text-sm font-medium pb-3">
                     Amount to Deposit <span>USD</span>
                   </p>
-                  <div className="w-full h-16 border border-b-0 border-gray-300 rounded-t px-4 flex items-center justify-between bg-white phone:h-12">
+                  <div className="w-full h-16 border border-b-0 border-gray-300 rounded-t px-4 flex items-center justify-between bg-white max-md:h-12">
                     <div className="w-max h-max flex items-center gap-4 ">
                       <input
                         type="checkbox"
@@ -479,7 +479,7 @@ const Deposit = () => {
                       <FaBtc />
                     </span>
                   </div>
-                  <div className="w-full h-16 border border-gray-300 rounded-t px-4 flex items-center justify-between bg-white phone:h-12">
+                  <div className="w-full h-16 border border-gray-300 rounded-t px-4 flex items-center justify-between bg-white max-md:h-12">
                     <div className="w-max h-max flex items-center gap-4 ">
                       <input
                         type="checkbox"
