@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import logo from "../../assets/expressProfit.png";
+import logo from "../../assets/theLogo.png";
 import { BiUser } from "react-icons/bi";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
